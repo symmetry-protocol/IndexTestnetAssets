@@ -29,7 +29,7 @@ def get_solana():
     while True:
         data = json.loads(requests.get(URL_SOLANA_COINS.format(page)).text)
         for coin in data:
-            coins.append({"gecko_id": coin['id'], 'symbol': coin['symbol'].upper()})
+            coins.append({"gecko_id": coin['id'], 'symbol': coin['symbol'].upper(), 'logo':coin['image']})
         page += 1
         if len(data) == 0: break
         sleep(0.3)
@@ -61,6 +61,10 @@ def combine_with_assets(coins):
                 counter += 1
 
             data[symbol] = {'gecko_id': coin['gecko_id'], 'symbol': coin['symbol']}
+            if 'logo' in coin:
+                data[symbol]['logo'] = coin['logo']
+            else:
+                print('could not find image')
 
 
 
