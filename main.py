@@ -16,7 +16,7 @@ def get_top(n):
     while coin_count < n:
         data = json.loads(requests.get(URL_TOP_COINS.format(page)).text)
         for coin in data:
-            coins.append({"gecko_id": coin['id'], 'symbol': coin['symbol'].upper()})
+            coins.append({"gecko_id": coin['id'], 'symbol': coin['symbol'].upper(), 'logo':coin['image']})
         page += 1
         coin_count += len(data)
         sleep(0.3)
