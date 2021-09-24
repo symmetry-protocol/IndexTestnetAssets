@@ -46,14 +46,23 @@ def combine_with_assets(coins):
         data = json.loads(f.read())
     
         for coin in coins:
-            if coin['gecko_id'] not in [
-                asset['gecko_id'] for asset in data['assets'].values()
-            ]:
-                data['highest_id'] += 1
-                data['assets'][ data['highest_id'] ] = {
-                    'gecko_id': coin['gecko_id'],
-                    'symbol': coin['symbol']
-                }
+            symbol = coin['symbol']
+            original_symbol = symbol
+
+            if coin['gecko_id'] in [asset['gecko_id'] for asset in data.values()]:
+                continue
+
+            print('got a new coin: {}'.format(coin))
+
+            counter = 1
+            while symbol in data:
+                print('symbol {} repeats !'.format(symbol))
+                symbol = original_symbol + "_" + str(counter)
+                counter += 1
+
+            data[symbol] = {'gecko_id': coin['gecko_id'], 'symbol': coin['symbol']}
+
+
 
     with open('index_assets.json', 'w', encoding='utf-8') as f:
         f.write(json.dumps(data))
